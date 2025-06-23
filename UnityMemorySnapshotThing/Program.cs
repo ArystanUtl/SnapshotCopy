@@ -43,6 +43,12 @@ public static class Program
         snapshotHashcode += ".txt";
 
         var start = DateTime.Now;
+
+        if (File.Exists("log1.txt"))
+        {
+            File.Delete("log1.txt");
+        }
+        
         File.AppendAllText("log1.txt","\n");
         File.AppendAllText("log1.txt","Reading snapshot file...\n");
         using var file = new SnapshotFile(filePath);
