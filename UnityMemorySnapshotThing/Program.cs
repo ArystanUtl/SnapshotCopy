@@ -10,13 +10,33 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        if (args.Length == 0)
+        while (true)
         {
-            File.AppendAllText("log1.txt","No file specified\n");
-            return;
+            Console.WriteLine("Write snapshot path... or E for exit");
+            var path = Console.ReadLine();
+            if (path?.ToLower() == "e")
+            {
+                Environment.Exit(0);
+                return;
+            }
+            path = path?.Replace("\"", "");
+            
+            if (!File.Exists(path))
+            {
+                Console.WriteLine("File not exist. Check path and try again.");
+            }
+            else
+            {
+                Analyze(path);
+            }
+            
+            Console.WriteLine();
+            Console.WriteLine();
         }
+    }
 
-        var filePath = @"C:\Users\User123\Desktop\Projects\SS\OldSNaphots\AfterExitOnline.snap";
+    private static void Analyze(string filePath)
+    {
         var snapshotHashcode = filePath.Split("\\").Last();
         var pointIndex = snapshotHashcode.IndexOf(".", StringComparison.Ordinal);
         snapshotHashcode = snapshotHashcode.Substring(0, pointIndex);
@@ -43,7 +63,10 @@ public static class Program
         // FindLeakedUnityObjects(file);
         while (true)
         {
-            Console.Write("\n\nWhat would you like to do now?\n1: Find leaked managed shells.\n2: Dump information on a specific object (by address).\n0: Exit\nChoice: ");
+            Console.Write("\n\nWhat would you like to do now?\n"
+                          + "1: Find leaked managed shells.\n"
+                          + "2: Dump information on a specific object (by address).\n"
+                          + "ELSE: Return to Start\nChoice: ");
 
             var choice = Console.ReadLine();
 
@@ -56,19 +79,13 @@ public static class Program
             {
                 DumpObjectInfo(file);
             }
-            else if (choice == "0")
-            {
-                break;
-            }
             else
             {
-                File.AppendAllText("log1.txt", "Invalid choice.\n");
+                return;
             }
         }
-
-       
     }
-    
+
     private static void FindLeakedUnityObjects(SnapshotFile file)
     {
         var start = DateTime.Now;
