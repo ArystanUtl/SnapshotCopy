@@ -156,7 +156,7 @@ public static class Program
         
         if (!ulong.TryParse(addressString, NumberStyles.HexNumber, null, out var address))
         {
-            File.AppendAllText("log1.txt","Unable to parse address.\n");
+            File.AppendAllText("log1.txt",$"Unable to parse address => {addressString}\n");
             return;
         }
 
