@@ -10,19 +10,12 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        var thread = new Thread(Start, 256 * 1024 * 1024);
+        var thread = new Thread(Run, 256 * 1024 * 1024);
         thread.Start();
         thread.Join();
-        
-        return;
-
-        void Start()
-        {
-            Run(args);
-        }
     }
 
-    private static void Run(string[] args)
+    private static void Run()
     {
         while (true)
         {
