@@ -10,6 +10,20 @@ public static class Program
 {
     public static void Main(string[] args)
     {
+        var thread = new Thread(Start, 256 * 1024 * 1024);
+        thread.Start();
+        thread.Join();
+        
+        return;
+
+        void Start()
+        {
+            Run(args);
+        }
+    }
+
+    private static void Run(string[] args)
+    {
         while (true)
         {
             Console.WriteLine("Write snapshot path... or E for exit");
@@ -19,6 +33,7 @@ public static class Program
                 Environment.Exit(0);
                 return;
             }
+            
             path = path?.Replace("\"", "");
             
             if (!File.Exists(path))
