@@ -46,9 +46,8 @@ public static class Program
     private static void Analyze(string filePath)
     {
         var snapshotHashcode = filePath.Split("\\").Last();
-        var pointIndex = snapshotHashcode.IndexOf(".", StringComparison.Ordinal);
-        snapshotHashcode = snapshotHashcode.Substring(0, pointIndex);
-        snapshotHashcode += ".txt";
+        
+        snapshotHashcode = TryGetGitHash(snapshotHashcode);
 
         var start = DateTime.Now;
 
@@ -97,6 +96,22 @@ public static class Program
             {
                 return;
             }
+        }
+    }
+
+    private static string TryGetGitHash(string snapshotHashcode)
+    {
+        try
+        {
+            var pointIndex = snapshotHashcode.IndexOf(".", StringComparison.Ordinal);
+            snapshotHashcode = snapshotHashcode[..pointIndex];
+            snapshotHashcode += ".txt";
+            
+            return snapshotHashcode;
+        }
+        catch
+        {
+            return snapshotHashcode;
         }
     }
 
